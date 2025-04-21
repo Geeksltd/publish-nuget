@@ -136,7 +136,9 @@ class Action {
             if (!parsedVersion)
                 this._printErrorAndExit("unable to extract version info!")
 
-            this.version = parsedVersion[1]
+            // ^\s*<(Package|)Version>(.*)<\/(Package|)Version>\s*$
+            // 0: is the match, 1: empty string or 'package', 2: the version, 3: empty string or 'package'
+            this.version = parsedVersion[2]
         }
 
         console.log(`Version: ${this.version}`)
