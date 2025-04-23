@@ -108,7 +108,7 @@ class Action {
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
                     const existingVersions = JSON.parse(body)
-                    if (existingVersions.versions.indexOf(this.version) < 0)
+                    if (existingVersions.versions.filter(v => v === this.version || v + ".0" === this.version).length > 0)
                         this._pushPackage(this.version, this.packageName)
                 })
             }
