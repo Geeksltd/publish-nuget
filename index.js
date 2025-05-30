@@ -107,8 +107,13 @@ class Action {
                 res.setEncoding("utf8")
                 res.on("data", chunk => body += chunk)
                 res.on("end", () => {
-                    const existingVersions = JSON.parse(body)
-                    if (existingVersions.versions.filter(v => v === this.version || v + ".0" === this.version).length === 0)
+                    const resData = JSON.parse(body)
+                    const existingVersions = resData?.versions
+                    const lastVersion = existingVersions ? existingVersions[existingVersions.length - 1] : '';
+                    
+                    console.log(`Last published version: ${lastVersion} - Published packages: ${existingVersions?.length}`)
+
+                    if (lastVersion != this.version && lastVersion + ".0" != this.version)
                         this._pushPackage(this.version, this.packageName)
                 })
             }
