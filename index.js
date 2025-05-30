@@ -100,6 +100,10 @@ class Action {
         https.get(`${this.nugetSource}/v3-flatcontainer/${this.packageName}/index.json`, res => {
             let body = ""
 
+            if (res.statusCode != 200) {
+                console.log(`##[error calling nuget api] status code : ${res.statusCode}`)
+            }
+
             if (res.statusCode == 404)
                 this._pushPackage(this.version, this.packageName)
 
