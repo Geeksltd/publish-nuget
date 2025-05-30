@@ -96,12 +96,14 @@ class Action {
         }
 
         console.log(`Package Name: ${this.packageName}`)
+        const apiUrl = `${this.nugetSource.trim()}/v3-flatcontainer/${this.packageName.trim()}/index.json`
+        console.log(`Calling nuget api at '${apiUrl}'`)
 
-        https.get(`${this.nugetSource}/v3-flatcontainer/${this.packageName}/index.json`, res => {
+        https.get(apiUrl, res => {
             let body = ""
 
             if (res.statusCode != 200) {
-                console.log(`##[error calling nuget api] status code : ${res.statusCode}`)
+                console.log(`error calling nuget api '${apiUrl}' with status code: '${res.statusCode}'`)
             }
 
             if (res.statusCode == 404)
@@ -114,7 +116,7 @@ class Action {
                     const resData = JSON.parse(body)
                     const existingVersions = resData?.versions
                     const lastVersion = existingVersions ? existingVersions[existingVersions.length - 1] : '';
-                    
+
                     console.log(`Last published version: ${lastVersion} - Published packages: ${existingVersions?.length}`)
 
                     if (lastVersion != this.version && lastVersion + ".0" != this.version)
