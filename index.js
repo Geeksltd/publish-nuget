@@ -96,7 +96,7 @@ class Action {
         }
 
         console.log(`Package Name: ${this.packageName}`)
-        const apiUrl = `${this.nugetSource.trim()}/v3-flatcontainer/${this.packageName.trim()}/index.json`
+        const apiUrl = `${this.nugetSource.trim()}/v3-flatcontainer/${this.packageName.trim().toLowerCase()}/index.json`
         console.log(`Calling nuget api at '${apiUrl}'`)
 
         https.get(apiUrl, res => {
